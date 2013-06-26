@@ -45,15 +45,46 @@ def invertir(name,name2):
     img.save(name2)
     mostrarImagen(name2)
 
-def main():
+def scale(name,name2,prop=2):
+    img = Image.open(name)
+    w,h = img.size
+    pixeles = img.load()
+
+    resized = Image.new('RGB',(w*2,h*2))
+    pix2 = resized.load()
+    nw,nh = resized.size
+
+
+    for j in range(nh):
+        for i in range(0,nw,2):
+            pix2[i,j] = pixeles[i%w,j%h]
+            pix2[i+1,j] = pixeles[i%w,j%h]
+
+
+    resized.save(name2)
+    mostrarImagen(name2)
+
+def nomain():
     name = "jenni.png"
     name2 = "prueba.jpg"
     
-    #mostrarImagen(name)
-    
-    #grises(name,name2)
+    print "Como desea ver la imagen?"
+    o = raw_input("NORMAL/GRISES/INVERTIDA \n")
 
-    invertir(name,name2)
+    if o == "NORMAL":
+        mostrarImagen(name)
+    elif o == "GRISES":
+        grises(name,name2)
+    elif o == "INVERTIDA":
+        invertir(name,name2)
+    else:
+        print "Opcion invalida"
+        return
+    
+def main():
+    name = "jenni.png"
+    name2 = "prueba.jpg"
+    scale(name,name2)
 
 if __name__ == "__main__":
     main()
