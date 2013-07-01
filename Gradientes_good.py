@@ -1,6 +1,7 @@
 import math
 import Image
 from time import time
+from math import floor
 
 Sobelx = ([-1,0,1],[-2,0,2],[-1,0,1])
 Sobely = ([1,2,1],[0,0,0],[-1,-2,-1])
@@ -23,9 +24,32 @@ def grises(w,h,pix,im):
             pix[i,j] = (prom,prom,prom)
     im.save('gris.png')
     #im.show()
+    t_final = time()
     t_total = t_final - t_inicial
     print "Tiempo en escala de grises: ",t_total
     return im 
+
+def norm(normal):
+    w,h = normal.size
+    pixeles = normal.load()
+    lista_pixeles = []
+    lista_pixeles2= []
+    for j in range(h):
+        for i in range(w):
+            pix = pixeles[i,j][1]
+            lista_pixeles.append(pix)
+    maximo = max(lista_pixeles)
+    minimo = min(lista_pixeles)
+    l = 255.0/(maximo-minimo)
+
+    for j in range(h):
+        for i in range(w):
+            pix = pixeles[i,j][1]
+            nuevo = int(floor((pix-minimo)*l))
+            pixeles[i,j] = ((nuevo,nuevo,nuevo))
+    normal.save('normal.png')
+    #normal.show()                                                                                                                              
+    return normal
 
 def convolucion(im):
     t_inicial = time()
@@ -63,18 +87,44 @@ def convolucion(im):
                 g = 0
             pix[i,j] = (g,g,g)
     im.save('prueba.png')
+    #im.show()
+    t_final = time()
+    t_total = t_final - t_inicial
+
+    print "Tiempo de convolucion: ",t_total
+    return im
+
+def binarizar(im):
+    t_inicial = time()
+    from sys import argv
+    umbral = argv[1]
+
+    w,h = im.size
+    pixeles = im.load()
+    for i in range(w):
+        for j in range(h):
+            if pixeles[i,j][1] < umbral:
+                pixeles[i,j] = (0,0,0)
+            else:
+                pixeles[i,j] = (255,255,255)
+    
+    im.save('binaria.png')
     im.show()
     t_final = time()
     t_total = t_final - t_inicial
-    print "Tiempo de convolucion: ",t_total
+    print "Tiempo de binarizacion: ",t_total
+
 
 def main():
+    
     im = Image.open('jenni.png')
+    #im = Image.open('mugrero.jpg')
     ancho,altura = im.size
     pixels = im.load()
 
     gris = grises(ancho,altura,pixels,im)
-    convolucion(gris)
-
+    normal = norm(gris)
+    conv = convolucion(normal)
+    binarizar(conv)
 if __name__ == '__main__':
     main()

@@ -1,0 +1,29 @@
+import Image
+import math
+
+
+def grises(im):
+    gris = im.copy()
+    w,h = gris.size
+    pixeles = gris.load()
+    for i in range(w):
+        for j in range(h):
+            prom = sum(pixeles[i,j])/3
+            pixeles[i,j] = (prom,prom,prom)
+
+    gris.save('gris.png')
+    return gris
+
+def norm(im):
+    w,h = im.size
+    pixeles = im.load()
+    
+
+def main():
+    im = Image.open('mugrero.jpg')
+    
+    gris = grises(im)
+    normalizada = norm(gris)
+
+if __name__ == '__main__':
+    main()

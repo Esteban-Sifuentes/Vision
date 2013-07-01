@@ -1,0 +1,4 @@
+import Tkinter
+tk = Tkinter
+root = tk.Tk()
+root.title("Alpha Space Station")
