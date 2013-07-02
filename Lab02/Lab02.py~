@@ -1,0 +1,10 @@
+import Image
+from math import sqrt, pow
+
+
+
+def main():
+    im = Image.open('')
+
+if __name__ == '__main__':
+    main()
