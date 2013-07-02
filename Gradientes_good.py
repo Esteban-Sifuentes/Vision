@@ -1,7 +1,10 @@
 import math
 import Image
 from time import time
+<<<<<<< HEAD
 from math import floor
+=======
+>>>>>>> 6ebb7fce1eb8276bd283c8df126894773d03194e
 
 Sobelx = ([-1,0,1],[-2,0,2],[-1,0,1])
 Sobely = ([1,2,1],[0,0,0],[-1,-2,-1])
@@ -24,7 +27,10 @@ def grises(w,h,pix,im):
             pix[i,j] = (prom,prom,prom)
     im.save('gris.png')
     #im.show()
+<<<<<<< HEAD
     t_final = time()
+=======
+>>>>>>> 6ebb7fce1eb8276bd283c8df126894773d03194e
     t_total = t_final - t_inicial
     print "Tiempo en escala de grises: ",t_total
     return im 
@@ -63,7 +69,11 @@ def convolucion(im):
         for i in range(w):
             sumax = 0
             sumay = 0
+<<<<<<< HEAD
 	    #Recorremos la mascara
+=======
+        #Recorremos la mascara
+>>>>>>> 6ebb7fce1eb8276bd283c8df126894773d03194e
             for x in range(len(Sobelx[0])):
                 for y in range(len(Sobely[0])):
                     try:
@@ -112,6 +122,7 @@ def binarizar(im):
     im.show()
     t_final = time()
     t_total = t_final - t_inicial
+<<<<<<< HEAD
     print "Tiempo de binarizacion: ",t_total
 
 
@@ -119,12 +130,23 @@ def main():
     
     im = Image.open('jenni.png')
     #im = Image.open('mugrero.jpg')
+=======
+    print "Tiempo de convolucion: ",t_total
+
+def main():
+    im = Image.open('jenni.png')
+>>>>>>> 6ebb7fce1eb8276bd283c8df126894773d03194e
     ancho,altura = im.size
     pixels = im.load()
 
     gris = grises(ancho,altura,pixels,im)
+<<<<<<< HEAD
     normal = norm(gris)
     conv = convolucion(normal)
     binarizar(conv)
+=======
+    convolucion(gris)
+
+>>>>>>> 6ebb7fce1eb8276bd283c8df126894773d03194e
 if __name__ == '__main__':
     main()
