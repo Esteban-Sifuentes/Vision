@@ -1,10 +1,8 @@
 import math
 import Image
 from time import time
-<<<<<<< HEAD
 from math import floor
-=======
->>>>>>> 6ebb7fce1eb8276bd283c8df126894773d03194e
+
 
 Sobelx = ([-1,0,1],[-2,0,2],[-1,0,1])
 Sobely = ([1,2,1],[0,0,0],[-1,-2,-1])
