@@ -20,8 +20,7 @@ def convolucion(im,mascara):
     copia = Image.new("RGB",(w,h))
     pix = copia.load()
 
-    wm = len(mascara[0])
-    hm = len(mascara)
+    lista = []
 
     for i in range(w):
         for j in range(h):
@@ -32,11 +31,15 @@ def convolucion(im,mascara):
                 for y in range(j-1,j+2):
                     if 0 < x < w and 0 < y < h :
                         res += mascara[x - (i-1)][y - (j-1)] * pixeles[x,y][1]  
-                    else:
+                    else:             
                         res = 0
-            pix[i,j] = (res,res,res)
+            #Lista con los valores de la convolucion
+            lista.append(res)
 
-    return copia
+
+            #pix[i,j] = (res,res,res)
+
+    return copia,lista
 
 def normalizacion(im):
     w,h = im.size
@@ -54,17 +57,20 @@ def normalizacion(im):
     minimo = min(lista_pixeles)
     l = 255.0/(maximo-minimo)
 
+    lista = []
     for j in range(h):
         for i in range(w):
             pix = pixeles[i,j][0]
             nuevo = int(floor((pix-minimo)*l))
             pixs[i,j] =(nuevo,nuevo, nuevo)
+            lista.append(nuevo)
 
     return normal
 
 
 def main():
     im = Image.open('jenni.png')
+    #im = Image.open("mugrero.jpg")
 
     w,h = im.size
     pixeles = im.load()
@@ -81,13 +87,13 @@ def main():
     cambio = grises(im,w,h,pixeles)
 
     #Convolucion
-    cambio = convolucion(cambio,sobelX)
-    #cambio = convolucion(cambio,sobelY)
-    
+    #cambio,resultado1 = convolucion(cambio,sobelX)
+    #cambio,resultado2 = convolucion(cambio,sobelY)
+
     cambio = convolucion(cambio,prewittX)
     cambio = convolucion(cambio,prewittY)
 
-    cambio = normalizacion(cambio)
+    #cambio = normalizacion(cambio)
     
     cambio.show()
 

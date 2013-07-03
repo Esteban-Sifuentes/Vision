@@ -1,52 +1,58 @@
 import Image
 from numpy import array,zeros
-import pygame
-from pygame.locals import *
 import sys
+from math import floor
 
-RobertsX = array([[0,1],[-1,0]])
-RobertsY = array([[1,0],[0,-1]])
-SobelX = array([[-1,0,1],[-2,0,2],[-1,0,1]])
-SobelY = array([[1,2,1],[0,0,0],[-1,-2,-1]])
-PrewittX = array([[-1,0,1],[-1,0,1],[-1,0,1]])
-PrewittY = array([[1,1,1],[0,0,0],[-1,-1,-1]])
+RobertsX = [[0,1],[-1,0]]
+RobertsY = [[1,0],[0,-1]]
+SobelX = [[-1,0,1],[-2,0,2],[-1,0,1]]
+SobelY = [[1,2,1],[0,0,0],[-1,-2,-1]]
+PrewittX = [[-1,0,1],[-1,0,1],[-1,0,1]]
+PrewittY = [[1,1,1],[0,0,0],[-1,-1,-1]]
 
-def abrirImagen(name,w,h):
-    pygame.init()
-    
-    pantalla = pygame.display.set_mode((w,h))
-    imagen = pygame.image.load(name)
+def grises(im,w,h,pixeles):
+    gris = Image.new("RGB",(w,h))
+    pixs = gris.load()
 
-    pantalla.blit(imagen,(0,0))
-    pygame.display.flip()
-
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                sys.exit()
-
-def grises(im,pixs,w,h):
-    name2 = "gris.jpg"
     for j in range(h):
         for i in range(w):
-            prom = sum(pixs[i,j])/3
-            pixs[i,j] = (prom,prom,prom)
-    im.save(name2)
-    im.show(now)
-    #abrirImagen(name2,w,h)
-    return name2
-    
+            p = sum(pixeles[i,j])/3
+            pixs[i,j] = (p,p,p)
+    return gris
+
+def normalizar(im,w,h):
+    pixeles = im.load()
+
+    normal = Image.new("RGB",(w,h))
+    pixs = normal.load()
+
+    lista = []
+    for j in range(h):
+        for i in range(w):
+            lista.append(pixeles[i,j][0])
+
+    maximo = max(lista)
+    minimo = min(lista)
+
+    for j in range(h):
+        for i in range(w):
+            pix = pixeles[i,j][0]
+            new_pix = int(floor((pix-minimo)*(255.0/(maximo-minimo))))
+            pixs[i,j] = (new_pix,new_pix,new_pix)
+        
+    normal.show()
+
 
 def main():
-    name = "jenni.png"
-    im = Image.open(name)
+    im = Image.open('jenni.jpg')
     w,h = im.size
-    pixs = im.load()
-    #abrirImagen(name,w,h)
-    gris = grises(im,pixs,w,h)
+    pixeles = im.load()
+    im.show()
 
+    nueva = grises(im,w,h,pixeles)
+    nueva = pass
 
-    #abrirImagen(name,w,h)
+    nueva.show()
 
 
 if __name__ == "__main__":
