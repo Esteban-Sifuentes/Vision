@@ -34,9 +34,7 @@ def convolucion(im,mascara):
                 for y in range(j-1,j+2):
                     if 0 < x < w and 0 < y < h :
                         res += mascara[x - (i-1)][y - (j-1)] * pixeles[x,y][1]
-                        #gy += mascaray[x - (i-1)][y - (j-1)] * pixeles[x,y][1]
-                        #gx += mascara[x][y] * pixeles[i+y,j+x][1]
-                        #gy += mascaray[x][y] * pixeles[i+y,j+x][1]
+                        
                     else:             
                         res = 0
             pix[i,j] = (res,res,res)
