@@ -66,12 +66,15 @@ def detect(im,w,h,pixeles,opcion):
     for elemento in candidatos:
         x = elemento[0]
         y = elemento[1]
-        
-        draw.line((x,0,x,h),fill=(0,240,0))
-        draw.line((0,y,w,y),fill=(0,0,200))
-        isItAgujero(x,y,pixeles,im,opcion)
+        if matrix[x][y] < 20:
+            draw.line((x,0,x,h),fill=(0,240,0))
+            draw.line((0,y,w,y),fill=(0,0,200))
+            isItAgujero(x,y,pixeles,im,opcion)
+        else:
+            pass
     del draw
     im.show()
+    im.save("Agujeros_detected.png")
 
 def main():
 
@@ -79,7 +82,7 @@ def main():
     if opcion == "c":
          im = Image.open('agujeros2.jpg')
     elif opcion == "o":
-         im = Image.open('agujeros4.jpg')
+         im = Image.open('agujeros3.jpg')
 
     w,h = im.size
     pixeles = im.load()
