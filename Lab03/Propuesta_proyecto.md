@@ -4,7 +4,7 @@ Esteban Sifuentes Samaniego,	Matricula: 1395440
 
 PROPUESTA DE PROYECTO
 
-La primer idea que tengo para el proyecto de Vision Computacional es el reconocimiento de gestos con las manos. Aunque actualmente ya existen comercialmente Smart TV's que pueden ser controladas con gestos de las manos, para el caso de las computadoras no es igual. La implementacion de esta caracteristica en una computadora no estara limitada solamente a controlar la navegacion de carpetas o ventanas, si no que podria ir desde cosas minimas como apagar la computadora, controlar opciones de video o audio, o hasta podria integrarse en cosas mas grandes como controlar brazos roboticos o usarse en modelado 3D. 
+La primer idea que tengo para el proyecto de Vision Computacional es el reconocimiento de gestos con las manos. Aunque actualmente ya existen comercialmente Smart TV's que pueden ser controladas con gestos de las manos, para el caso de las computadoras no es igual. La implementación de esta caracteristica en una computadora no estara limitada solamente a controlar la navegacion de carpetas o ventanas, si no que podria ir desde cosas minimas como apagar la computadora, controlar opciones de video o audio, o hasta podria integrarse en cosas mas grandes como controlar brazos roboticos o usarse en modelado 3D. 
 
 Para esta primera propuesta he colocado a dos documentos dentro de este mismo repositorio.
 

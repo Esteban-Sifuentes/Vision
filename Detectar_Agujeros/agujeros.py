@@ -3,78 +3,93 @@ from PIL import ImageTk, Image, ImageDraw
 from numpy import zeros,where
 import sys
 
-def showing():
-    root = Tk()
-    img = ImageTk.PhotoImage(Image.open('agujero.png'))
-    texto = 'Agujero'
-
-
-    w = Label(root,
-              compound = (0,0),
-              text = texto,
-              foreground = '#FFFF00',
-              image = img).pack(side='right')
-
-    root.mainloop()
-
 def grises(im,w,h,pixeles,prueba,pix):
     for i in range(w):
         for j in range(h):
             p = sum(pixeles[i,j])/3
             pix[i,j] = (p,p,p)
+    return prueba,w,h,pix
 
-    return prueba
+def isItAgujero(x,y,pixeles,im,opcion):
+    mascara = [[1,1,1],[1,1,1],[1,1,1]]
+
+    promedio = 0
+    for i in range(-1,2):
+        for j in range(-1,2):
+            promedio += pixeles[x+i,y+i][1] * mascara[i+1][j+1]
+
+    promedio /= 9
+    print promedio
+
+    if opcion == "o":
+        #if promedio < 50:
+        if promedio < 20:
+            draw = ImageDraw.Draw(im)
+            draw.rectangle([(x-4,y-4),(x+4,y+4)],outline="#fc1a0a")
+
+    elif opcion == "c":
+        if promedio > 168:
+            draw = ImageDraw.Draw(im)
+            draw.rectangle([(x-4,y-4),(x+4,y+4)],outline="#fc1a0a")
 
 
-def work(im):
-    w,h = im.size
-    pixeles = im.load()
+def detect(im,w,h,pixeles,opcion):
     matrix = zeros((w,h))
-
+    
     for i in range(w):
         for j in range(h):
             matrix [i][j] = pixeles[i,j][1]
-
-    
+            
     columnas = matrix.sum(0) #Sumatoria de columnas
     filas = matrix.sum(1) #Sumatoria de filas
 
-    umbral_f = (max(filas)-30050)
-    umbral_c = (max(columnas)- 42000)
+    # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     candidatos = []
+    
+    if opcion == "o":
+        for i in range(1,w-1):
+            for j in range(1,h-1):
+                if filas[i-1] > filas[i] < filas[i+1] and columnas[j-1] > columnas[j] < columnas[j+1]:
+                    candidatos.append([i,j])
 
-    for i in range(w):
-        for j in range(h):
-            if filas[i] < umbral_f and columnas[j] < umbral_c:
-                candidatos.append([i,j])
+    elif opcion == "c":
+        for i in range(1,w-1):
+            for j in range(1,h-1):
+                if filas[i-1] < filas[i] > filas[i+1] and columnas[j-1] < columnas[j] > columnas[j+1]:
+                    candidatos.append([i,j])
 
-    #Painting
+    # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    #Do the line
     draw = ImageDraw.Draw(im)
     for elemento in candidatos:
-        draw = ImageDraw.Draw(im)
         x = elemento[0]
         y = elemento[1]
-
-        draw.line((x,0,x,h),fill=(255,0,0))
-        draw.line((0,y,w,y),fill=(255,255,0))
+        
+        draw.line((x,0,x,h),fill=(0,240,0))
+        draw.line((0,y,w,y),fill=(0,0,200))
+        isItAgujero(x,y,pixeles,im,opcion)
     del draw
-
-
     im.show()
 
-
 def main():
-    im = Image.open('agujeros3.jpg')
+
+    opcion = raw_input("Detectar circulos claros u oscuros? [c/o]")
+    if opcion == "c":
+         im = Image.open('agujeros2.jpg')
+    elif opcion == "o":
+         im = Image.open('agujeros4.jpg')
+
     w,h = im.size
     pixeles = im.load()
-    
     prueba = Image.new("RGB",(w,h))
     pix = prueba.load()
 
-    gris = grises(im,w,h,pixeles,prueba,pix)    
-    work(gris)
-    #showing()
+    gris,width,height,pix = grises(im,w,h,pixeles,prueba,pix)    
+
+
+    detect(gris,width,height,pix,opcion)
 
 if __name__ == "__main__":
     main()
