@@ -2,6 +2,7 @@ import Image
 from sys import argv,exit
 from math import floor
 
+# Parametros: Nuevas dimensiones
 x = int(argv[1])
 y = int(argv[2])
 
