@@ -38,42 +38,41 @@ def isItAgujero(x,y,pixeles,im,opcion):
 
 
 def detect(im,w,h,pixeles,opcion):
-    #Usamos matriz de zeros de numpy para copiar los valores de pixeles
+    #Usamos matriz de zeros de numpy para copiar los valores de pixeles                                                                                                                                                                                                                                                             
     matrix = zeros((w,h))
-    
-    #Copiamos cada valor
+
+    #Copiamos cada valor                                                                                                                                                                                                                                                                                                            
     for i in range(w):
         for j in range(h):
             matrix [i][j] = pixeles[i,j][1]
-    
-    columnas = matrix.sum(0) #Sumatoria de columnas
-    filas = matrix.sum(1) #Sumatoria de filas
 
-    # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    columnas = matrix.sum(0) #Sumatoria de columnas                                                                                                                                                                                                                                                                                 
+    filas = matrix.sum(1) #Sumatoria de filas                                                                                                                                                                                                                                                                                       
 
-    #Posibles lugares donde hay un agujero
-    candidatos = []    
+    # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>                                                                                                                                                                                                                                                                                            
 
-    #Ciclo para agujeros oscuros
+    #Posibles lugares donde hay un agujero                                                                                                                                                                                                                                                                                          
+    candidatos = []
+
+    #Ciclo para agujeros oscuros                                                                                                                                                                                                                                                                                                    
     if opcion == "o":
         umbral = 10
         for i in range(1,w-1):
             for j in range(1,h-1):
-                #Un agujero oscuro, va a dar los valores mas bajos de la imagen.
-                #Entonces busco las intersecciones de [fila,columna] donde un pixel es mas bajo que sus vecinos inmediatos
+                #Un agujero oscuro, va a dar los valores mas bajos de la imagen.                                                                                                                                                                                                                                                    
+                #Entonces busco las intersecciones de [fila,columna] donde un pixel es mas bajo que sus vecinos inmediatos                                                                                                                                                                                                          
                 if filas[i-1] > filas[i] < filas[i+1] and columnas[j-1] > columnas[j] < columnas[j+1]:
                     candidatos.append([i,j])
 
-    #Ciclo para agujeros claros
+    #Ciclo para agujeros claros                                                                                                                                                                                                                                                                                                     
     elif opcion == "c":
         umbral = 155
         for i in range(1,w-1):
             for j in range(1,h-1):
-                #Un agujero claro, va a dar los valores mas altos de la imagen
-                #Entonces busco las intersecciones de [fila,columna] donde un pixel es mas alto que sus vecinos inmediatos
+                #Un agujero claro, va a dar los valores mas altos de la imagen                                                                                                                                                                                                                                                      
+                #Entonces busco las intersecciones de [fila,columna] donde un pixel es mas alto que sus vecinos inmediatos                                                                                                                                                                                                          
                 if filas[i-1] < filas[i] > filas[i+1] and columnas[j-1] < columnas[j] > columnas[j+1]:
                     candidatos.append([i,j])
-
     # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     #Dibujo lineas en cada interseccion
@@ -83,20 +82,20 @@ def detect(im,w,h,pixeles,opcion):
         y = elemento[1]
         if opcion == 'o':
             if matrix[x][y] < 10:
-                #Las lineas atraviesan toda la imagen
+                #Las lineas atraviesan toda la imagen                                                                                                                                    
                 draw.line((x,0,x,h),fill=(0,240,0))
                 draw.line((0,y,w,y),fill=(0,0,200))
-                #Me aseguro de que la interseccion sea un agujero y no una sombra
+                #Me aseguro de que la interseccion sea un agujero y no una sombra                                                                                                        
                 isItAgujero(x,y,pixeles,im,opcion)
             else:
                 pass
-            
+
         if opcion == 'c':
             if matrix[x][y] > 155:
-                #Las lineas atraviesan toda la imagen                                                                                          
+                #Las lineas atraviesan toda la imagen                                                                                                                                    
                 draw.line((x,0,x,h),fill=(0,240,0))
                 draw.line((0,y,w,y),fill=(0,0,200))
-                #Me aseguro de que la interseccion sea un agujero y no una sombra                                                              
+                #Me aseguro de que la interseccion sea un agujero y no una sombra                                                                                                        
                 isItAgujero(x,y,pixeles,im,opcion)
         else:
                 pass
@@ -104,7 +103,7 @@ def detect(im,w,h,pixeles,opcion):
     del draw
     im.show()
     im.save("Agujeros_detected.png")
-
+    
 def main():
 
     opcion = raw_input("Detectar circulos claros u oscuros? [c/o]")
